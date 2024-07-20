@@ -1,52 +1,107 @@
-Start the server:
+# JWT Authentication Example
 
-bash
+This project is a simple Node.js application that demonstrates JWT-based authentication using Express.js. It includes routes for user login and a protected route that requires a valid JWT for access.
 
-    node index.js
+## Features
 
-The server should now be running on http://localhost:3000.
-Step 4: Test the API
+- User login with JWT generation.
+- Protected route that requires JWT authentication.
+- Password hashing with bcryptjs.
 
-You can use tools like Postman or curl to test the API endpoints.
+## Prerequisites
 
-    Get all users:
+- Node.js (v14 or higher recommended)
+- npm (Node Package Manager)
 
-    bash
+## Installation
 
-GET http://localhost:3000/api/users
+1. **Clone the Repository**:
 
-Get a user by ID:
+    ```sh
+    git clone <repository-url>
+    cd jwt-auth-example
+    ```
 
-bash
+2. **Install Dependencies**:
 
-GET http://localhost:3000/api/users/1
+    ```sh
+    npm install
+    ```
 
-Create a new user:
+## Configuration
 
-bash
+1. **Secret Key**: The secret key for signing JWTs is set in the `routes/auth.js` file. Update `'your_secret_key'` with a secure key.
 
-POST http://localhost:3000/api/users
-Content-Type: application/json
-{
-    "name": "New User",
-    "email": "newuser@example.com"
-}
+    ```javascript
+    const token = jwt.sign({ username }, 'your_secret_key', { expiresIn: '1h' });
+    ```
 
-Update a user:
+## Usage
 
-bash
+1. **Start the Server**:
 
-PUT http://localhost:3000/api/users/1
-Content-Type: application/json
-{
-    "name": "Updated User",
-    "email": "updateduser@example.com"
-}
+    ```sh
+    npm start
+    ```
 
-Delete a user:
+    Or, for development with auto-restarting:
 
-bash
+    ```sh
+    npm run dev
+    ```
 
-    DELETE http://localhost:3000/api/users/1
+2. **Endpoints**:
 
-This is a simple example of a RESTful API using Node.js and Express. In a real-world application, you'd likely use a database to persist data instead of an in-memory array, and add validation, error handling, and other features.
+    - **Login**:
+      - **URL**: `/api/login`
+      - **Method**: POST
+      - **Body**: 
+        ```json
+        {
+          "username": "user1",
+          "password": "password1"
+        }
+        ```
+      - **Response**:
+        ```json
+        {
+          "token": "<JWT-token>"
+        }
+        ```
+
+    - **Protected Route**:
+      - **URL**: `/api/protected`
+      - **Method**: GET
+      - **Header**: 
+        ```
+        Authorization: Bearer <JWT-token>
+        ```
+      - **Response**:
+        ```json
+        {
+          "msg": "Welcome user1!"
+        }
+        ```
+
+## Testing
+
+You can test the endpoints using tools like [Postman](https://www.postman.com/) or [curl](https://curl.se/).
+
+1. **Obtain a JWT** by sending a POST request to `/api/login`.
+2. **Access the protected route** by sending a GET request to `/api/protected` with the JWT in the Authorization header.
+
+## Development
+
+To add new features or modify the existing code:
+
+1. **Modify the code** in `app.js`, `routes/auth.js`, and `middleware/auth.js`.
+2. **Test your changes** locally.
+3. **Commit and push** your changes to the repository.
+
+## License
+
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+
+## Author
+
+Your Name
